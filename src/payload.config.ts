@@ -26,7 +26,6 @@ export default buildConfig({
   collections: [Users, Media, Animals, Adoptions, Contacts, Volunteers, SuccessStories],
   secret: process.env.PAYLOAD_SECRET || '',
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
-  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'],
   db: process.env.DATABASE_URI
     ? postgresAdapter({ pool: { connectionString: process.env.DATABASE_URI } })
     : sqliteAdapter({ client: { url: 'file:./animal-sos.db' } }),
