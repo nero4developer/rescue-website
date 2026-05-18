@@ -28,6 +28,7 @@ export const Contacts: CollectionConfig = {
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'topic', 'createdAt'],
   },
+  lockDocuments: false,
   fields: [
     {
       name: 'name',

@@ -12,6 +12,7 @@ export const SuccessStories: CollectionConfig = {
     useAsTitle: 'adopterFirstName',
     defaultColumns: ['adopterFirstName', 'animalName', 'country', 'featured', 'createdAt'],
   },
+  lockDocuments: false,
   fields: [
     {
       name: 'adopterFirstName',

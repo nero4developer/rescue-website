@@ -72,6 +72,7 @@ export const Adoptions: CollectionConfig = {
     useAsTitle: 'applicantEmail',
     defaultColumns: ['applicantName', 'applicantEmail', 'animal', 'status', 'createdAt'],
   },
+  lockDocuments: false,
   fields: [
     {
       name: 'animal',

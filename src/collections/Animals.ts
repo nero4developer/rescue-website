@@ -14,6 +14,7 @@ export const Animals: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'type', 'breed', 'status', 'updatedAt'],
   },
+  lockDocuments: false,
   fields: [
     {
       name: 'name',

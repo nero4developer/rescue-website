@@ -29,6 +29,7 @@ export const Volunteers: CollectionConfig = {
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'country', 'createdAt'],
   },
+  lockDocuments: false,
   fields: [
     {
       name: 'name',
