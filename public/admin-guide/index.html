@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Guide — Animal SOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Brand tokens ── */
+    :root {
+      --cream:        #F7F3EC;
+      --warm-dark:    #1C1510;
+      --amber:        #D4832A;
+      --amber-light:  #F2C27A;
+      --amber-pale:   #FDF3E3;
+      --clay:         #B85C3A;
+      --sage:         #4A6741;
+      --sage-light:   #C8D9C4;
+      --text-body:    #3A2E26;
+      --text-muted:   #7A6A5A;
+      --off-white:    #FFFDF9;
+      --border:       #E8E2D8;
+      --sidebar-w:    260px;
+    }
+
+    /* ── Base ── */
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-body);
+      background: var(--off-white);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.3; }
+
+    a { color: var(--amber); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      background: var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--clay);
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--warm-dark);
+      color: #d4c9bc;
+      padding: 0 0 40px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 12px;
+    }
+    .sidebar-logo span {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      color: var(--amber-light);
+      line-height: 1.2;
+    }
+    .sidebar-logo small {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .toc-section { padding: 6px 0; }
+    .toc-heading {
+      display: block;
+      padding: 5px 20px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6b5f55;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    .toc-link {
+      display: block;
+      padding: 6px 20px 6px 28px;
+      font-size: 13px;
+      color: #b0a89e;
+      transition: color 0.15s, background 0.15s;
+      border-left: 2px solid transparent;
+    }
+    .toc-link:hover {
+      color: var(--amber-light);
+      background: rgba(212,131,42,0.08);
+      border-left-color: var(--amber);
+      text-decoration: none;
+    }
+    .toc-link.placeholder { color: #4a4038; font-style: italic; }
+
+    /* ── Main content ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 48px 56px 80px;
+      max-width: 860px;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid var(--border);
+    }
+    .page-header h1 { font-size: 32px; color: var(--warm-dark); margin-bottom: 8px; }
+    .page-header p { color: var(--text-muted); font-size: 15px; }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 56px; }
+    .section-title {
+      font-size: 22px;
+      color: var(--warm-dark);
+      margin-bottom: 4px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-intro { color: var(--text-muted); margin: 12px 0 24px; font-size: 14px; }
+
+    .subsection { margin-bottom: 32px; }
+    .subsection h3 {
+      font-size: 16px;
+      color: var(--clay);
+      margin-bottom: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+    }
+
+    /* ── Steps ── */
+    ol.steps { padding-left: 0; list-style: none; counter-reset: step; }
+    ol.steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 12px;
+      align-items: flex-start;
+    }
+    ol.steps li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      background: var(--amber);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    /* ── Callout boxes ── */
+    .note, .warning, .tip, .placeholder-box {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .note    { background: var(--amber-pale); border-left: 3px solid var(--amber); }
+    .warning { background: #fdf0ed; border-left: 3px solid var(--clay); }
+    .tip     { background: #eef4ed; border-left: 3px solid var(--sage); }
+    .placeholder-box { background: #f0ede8; border-left: 3px solid #b0a89e; }
+
+    .note    .icon { color: var(--amber); }
+    .warning .icon { color: var(--clay); }
+    .tip     .icon { color: var(--sage); }
+    .placeholder-box .icon { color: #7a6a5a; }
+
+    .note strong, .warning strong, .tip strong, .placeholder-box strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ── Screenshot placeholder ── */
+    .screenshot {
+      width: 100%;
+      background: var(--cream);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 32px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin: 16px 0;
+    }
+    .screenshot svg { display: block; margin: 0 auto 8px; opacity: 0.4; }
+
+    /* ── Field table ── */
+    table.fields {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 16px 0;
+    }
+    table.fields th {
+      background: var(--cream);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      color: var(--warm-dark);
+    }
+    table.fields td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    table.fields tr:last-child td { border-bottom: none; }
+    .req { color: var(--clay); font-size: 11px; font-weight: 600; letter-spacing: 0.05em; }
+
+    /* ── URL chip ── */
+    .url-chip {
+      display: inline-block;
+      background: var(--warm-dark);
+      color: var(--amber-light);
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin: 4px 0;
+    }
+
+    /* ── Coming soon badge ── */
+    .coming-soon {
+      display: inline-block;
+      background: var(--border);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    /* ── Footer ── */
+    .guide-footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── Print ── */
+    @media print {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 24px; }
+      .screenshot { display: none; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .sidebar { position: relative; width: 100%; height: auto; }
+      body { flex-direction: column; }
+      .main { margin-left: 0; padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SIDEBAR — TABLE OF CONTENTS
+══════════════════════════════════════ -->
+<nav class="sidebar" aria-label="Guide navigation">
+  <div class="sidebar-logo">
+    <span>Animal SOS</span>
+    <small>Admin Guide</small>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-heading">Getting Started</span>
+    <a class="toc-link" href="#access">Accessing the admin panel</a>
+    <a class="toc-link" href="#login">Logging in</a>
+    <a class="toc-link" href="#dashboard">Dashboard overview</a>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-heading">Animals</span>
+    <a class="toc-link" href="#add-animal">Adding a new animal</a>
+    <a class="toc-link" href="#edit-animal">Editing an animal</a>
+    <a class="toc-link" href="#photos">Uploading photos</a>
+    <a class="toc-link" href="#unpublish">Hiding an animal listing</a>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-heading">Adoptions</span>
+    <a class="toc-link" href="#view-applications">Viewing applications</a>
+    <a class="toc-link" href="#application-status">Updating status</a>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-heading">Other Content</span>
+    <a class="toc-link" href="#success-stories">Success stories</a>
+    <a class="toc-link" href="#contacts">Contact submissions</a>
+    <a class="toc-link" href="#media-library">Media library</a>
+    <a class="toc-link" href="#users">Admin users</a>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-heading">Coming Soon</span>
+    <a class="toc-link placeholder" href="#cs-events">Events</a>
+    <a class="toc-link placeholder" href="#cs-globals">Site-wide text</a>
+    <a class="toc-link placeholder" href="#cs-foster">Foster applications</a>
+    <a class="toc-link placeholder" href="#cs-sponsor">Sponsor animals</a>
+    <a class="toc-link placeholder" href="#cs-rescue">Stray rescue reports</a>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-heading">Help</span>
+    <a class="toc-link" href="#troubleshoot">Troubleshooting</a>
+    <a class="toc-link" href="#contact-dev">Contact the developer</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════ -->
+<main class="main">
+
+  <header class="page-header">
+    <h1>Admin Dashboard Guide</h1>
+    <p>A step-by-step reference for managing the Animal SOS website. No technical knowledge required. If anything on this page is unclear, contact the developer — details at the bottom.</p>
+  </header>
+
+
+  <!-- ── GETTING STARTED ── -->
+  <section class="section" id="getting-started">
+    <h2 class="section-title">Getting Started</h2>
+
+    <div class="subsection" id="access">
+      <h3>Accessing the admin panel</h3>
+      <p>The admin panel is a private area of the website — visitors cannot see it. To open it, go to:</p>
+      <p style="margin: 12px 0;"><span class="url-chip">https://[your-domain]/admin</span></p>
+      <p style="color: var(--text-muted); font-size: 14px;">Replace <code>[your-domain]</code> with the actual website address once it is live. Bookmark this URL so you can find it quickly.</p>
+      <div class="note">
+        <span class="icon">ℹ</span>
+        <div><strong>Tip:</strong> The admin panel works on any device — phone, tablet, or computer. A larger screen is more comfortable for managing animals and applications.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="login">
+      <h3>Logging in</h3>
+      <ol class="steps">
+        <li>Open the admin panel URL in your browser.</li>
+        <li>Enter your <strong>email address</strong> and <strong>password</strong>.</li>
+        <li>Click <strong>Login</strong>.</li>
+      </ol>
+      <div class="screenshot">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><circle cx="7" cy="6" r="0.5" fill="currentColor"/><circle cx="10" cy="6" r="0.5" fill="currentColor"/></svg>
+        [SCREENSHOT: Login screen — replace with actual screenshot when site is live]
+      </div>
+      <div class="warning">
+        <span class="icon">⚠</span>
+        <div><strong>Forgot your password?</strong> Click <em>Forgot password</em> on the login screen and enter your email. A reset link will be sent to you. If you do not receive it within a few minutes, check your spam folder.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="dashboard">
+      <h3>Dashboard overview</h3>
+      <p>After logging in you will see the main dashboard. The left sidebar lists everything you can manage:</p>
+      <table class="fields">
+        <thead><tr><th>Sidebar item</th><th>What it contains</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Animals</strong></td><td>All dogs and cats available for adoption</td></tr>
+          <tr><td><strong>Adoptions</strong></td><td>Adoption application forms submitted by the public</td></tr>
+          <tr><td><strong>Success Stories</strong></td><td>Stories about animals who found their forever home</td></tr>
+          <tr><td><strong>Contacts</strong></td><td>Messages sent through the website contact form</td></tr>
+          <tr><td><strong>Media</strong></td><td>All photos and files uploaded to the site</td></tr>
+          <tr><td><strong>Users</strong></td><td>Admin accounts (staff and volunteers with login access)</td></tr>
+        </tbody>
+      </table>
+      <div class="screenshot">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="21"/></svg>
+        [SCREENSHOT: Dashboard with sidebar visible — replace with actual screenshot when site is live]
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── ANIMALS ── -->
+  <section class="section" id="animals">
+    <h2 class="section-title">Animals</h2>
+    <p class="section-intro">The Animals section controls everything the public sees on the adoption listing page — photos, descriptions, personality details, and availability status.</p>
+
+    <div class="subsection" id="add-animal">
+      <h3>Adding a new animal</h3>
+      <ol class="steps">
+        <li>Click <strong>Animals</strong> in the left sidebar.</li>
+        <li>Click the <strong>Create New</strong> button in the top-right corner.</li>
+        <li>Fill in the fields (see the field guide below).</li>
+        <li>Upload a photo — see <a href="#photos">Uploading photos</a> below.</li>
+        <li>Click <strong>Save</strong> in the top-right corner.</li>
+      </ol>
+      <div class="tip">
+        <span class="icon">✓</span>
+        <div><strong>The animal will appear on the website immediately</strong> after saving. If you want to prepare a listing without publishing it yet, leave the <em>Status</em> field set to <em>Draft</em> before saving.</div>
+      </div>
+
+      <h3 style="margin-top: 24px;">Animal fields explained</h3>
+      <table class="fields">
+        <thead><tr><th>Field</th><th>What to enter</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Name</strong></td><td>The animal's name (e.g. Bruno, Luna)</td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Species</strong></td><td>Select <em>Dog</em> or <em>Cat</em></td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Breed</strong></td><td>Breed name, or <em>Mixed breed</em> if unknown</td><td></td></tr>
+          <tr><td><strong>Age</strong></td><td>Select the closest age range (Puppy/Kitten, Young, Adult, Senior)</td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Size</strong></td><td>Select Small, Medium, or Large</td><td></td></tr>
+          <tr><td><strong>Gender</strong></td><td>Select Male or Female</td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Colour</strong></td><td>Brief colour description (e.g. brown and white)</td><td></td></tr>
+          <tr><td><strong>Description</strong></td><td>A warm, personal description of the animal's personality and story. This is the most important field — write as if you are introducing the animal to a potential adopter.</td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Photo</strong></td><td>The main profile photo — see <a href="#photos">Uploading photos</a></td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Vaccinated</strong></td><td>Tick if the animal has received vaccinations</td><td></td></tr>
+          <tr><td><strong>Neutered / Spayed</strong></td><td>Tick if the animal has been neutered or spayed</td><td></td></tr>
+          <tr><td><strong>Microchipped</strong></td><td>Tick if the animal has been microchipped</td><td></td></tr>
+          <tr><td><strong>Status</strong></td><td>Set to <em>Available</em> to show on the website. Set to <em>Draft</em> to hide it. Set to <em>Adopted</em> when the animal has found a home.</td><td><span class="req">REQUIRED</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection" id="edit-animal">
+      <h3>Editing an existing animal</h3>
+      <ol class="steps">
+        <li>Click <strong>Animals</strong> in the sidebar.</li>
+        <li>Find the animal in the list and click on its name to open it.</li>
+        <li>Make your changes to any field.</li>
+        <li>Click <strong>Save</strong> in the top-right corner.</li>
+      </ol>
+      <div class="note">
+        <span class="icon">ℹ</span>
+        <div>Changes appear on the public website within a few seconds of saving. There is no separate "publish" step — saving is publishing.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="photos">
+      <h3>Uploading photos</h3>
+      <ol class="steps">
+        <li>On the animal edit page, find the <strong>Photo</strong> field.</li>
+        <li>Click <strong>Add relationship</strong> or the upload icon.</li>
+        <li>Click <strong>Upload a new file</strong>.</li>
+        <li>Select the photo from your computer or phone.</li>
+        <li>In the <strong>Alt text</strong> field, type a short description of the photo (e.g. <em>Bruno sitting in the garden</em>). This is required for accessibility.</li>
+        <li>Click <strong>Save</strong> to confirm the upload.</li>
+        <li>The photo will appear in the Photo field — click <strong>Save</strong> on the animal record to confirm.</li>
+      </ol>
+      <div class="tip">
+        <span class="icon">✓</span>
+        <div><strong>Best photo tips:</strong> Use a photo taken in natural daylight. Make sure the animal's face is clearly visible. Photos taken at eye level with the animal work best. Avoid dark or blurry photos — they reduce adoption enquiries.</div>
+      </div>
+      <div class="warning">
+        <span class="icon">⚠</span>
+        <div><strong>Alt text is required.</strong> If you skip the Alt text field the photo will not save. Type a brief plain-English description of what is in the photo.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="unpublish">
+      <h3>Hiding an animal listing (marking as adopted or draft)</h3>
+      <ol class="steps">
+        <li>Open the animal record.</li>
+        <li>Change the <strong>Status</strong> field:<br>
+          — <em>Adopted</em> = animal has found a home (removed from public listing)<br>
+          — <em>Draft</em> = temporarily hidden (useful while you gather photos or write the description)
+        </li>
+        <li>Click <strong>Save</strong>.</li>
+      </ol>
+    </div>
+  </section>
+
+
+  <!-- ── ADOPTIONS ── -->
+  <section class="section" id="adoptions">
+    <h2 class="section-title">Adoption Applications</h2>
+    <p class="section-intro">Every time someone submits an adoption application on the website, a record appears here. You will also receive an email notification automatically.</p>
+
+    <div class="subsection" id="view-applications">
+      <h3>Viewing applications</h3>
+      <ol class="steps">
+        <li>Click <strong>Adoptions</strong> in the sidebar.</li>
+        <li>You will see a list of all applications, newest first.</li>
+        <li>Click any application to open it and read the full details.</li>
+      </ol>
+      <p style="margin-top: 12px;">Each application shows:</p>
+      <table class="fields">
+        <thead><tr><th>Field</th><th>What it contains</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Applicant name</strong></td><td>Full name of the person applying</td></tr>
+          <tr><td><strong>Email</strong></td><td>Their contact email address</td></tr>
+          <tr><td><strong>Phone</strong></td><td>Their phone number</td></tr>
+          <tr><td><strong>Animal</strong></td><td>Which animal they are applying for</td></tr>
+          <tr><td><strong>Home type</strong></td><td>House, apartment, etc.</td></tr>
+          <tr><td><strong>Has garden</strong></td><td>Whether their home has outdoor space</td></tr>
+          <tr><td><strong>Other pets</strong></td><td>What other animals they currently have</td></tr>
+          <tr><td><strong>Experience</strong></td><td>Their experience with animals</td></tr>
+          <tr><td><strong>Why adopt</strong></td><td>Their personal reason for adopting</td></tr>
+          <tr><td><strong>Status</strong></td><td>Current stage of the application</td></tr>
+          <tr><td><strong>Reference number</strong></td><td>Unique code for this application (e.g. SOS-20240518-A3F)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection" id="application-status">
+      <h3>Updating application status</h3>
+      <p>As you process each application, update its status to keep records organised and keep the applicant informed:</p>
+      <table class="fields">
+        <thead><tr><th>Status</th><th>When to use it</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Pending</strong></td><td>New application — not yet reviewed</td></tr>
+          <tr><td><strong>Under review</strong></td><td>You have read it and are considering it</td></tr>
+          <tr><td><strong>Home check scheduled</strong></td><td>You have arranged a home visit</td></tr>
+          <tr><td><strong>Approved</strong></td><td>The application has been accepted</td></tr>
+          <tr><td><strong>Rejected</strong></td><td>The application was not suitable</td></tr>
+          <tr><td><strong>Completed</strong></td><td>The animal has been collected and rehomed</td></tr>
+        </tbody>
+      </table>
+      <ol class="steps" style="margin-top: 16px;">
+        <li>Open the application record.</li>
+        <li>Click the <strong>Status</strong> dropdown and select the correct stage.</li>
+        <li>Click <strong>Save</strong>.</li>
+      </ol>
+      <div class="note">
+        <span class="icon">ℹ</span>
+        <div>Updating the status does not automatically send an email to the applicant. Contact them directly using the email address on their application.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── SUCCESS STORIES ── -->
+  <section class="section" id="success-stories">
+    <h2 class="section-title">Success Stories</h2>
+    <p class="section-intro">Success stories appear on the <em>Success Stories</em> page of the website. They inspire potential adopters and celebrate animals who have found their forever home.</p>
+
+    <div class="subsection">
+      <h3>Adding a new success story</h3>
+      <ol class="steps">
+        <li>Click <strong>Success Stories</strong> in the sidebar.</li>
+        <li>Click <strong>Create New</strong>.</li>
+        <li>Fill in the fields:</li>
+      </ol>
+      <table class="fields" style="margin-top: 12px;">
+        <thead><tr><th>Field</th><th>What to enter</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Animal name</strong></td><td>The animal's name</td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Adopter name</strong></td><td>First name of the adopter (get their permission before publishing)</td><td></td></tr>
+          <tr><td><strong>Story</strong></td><td>A short, warm account of the adoption — how they met, what life is like now</td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Photo</strong></td><td>A photo of the animal in their new home, or with their adopter</td><td><span class="req">REQUIRED</span></td></tr>
+          <tr><td><strong>Date</strong></td><td>The approximate date of adoption</td><td></td></tr>
+        </tbody>
+      </table>
+      <ol class="steps" style="margin-top: 12px;">
+        <li value="4">Click <strong>Save</strong>. The story will appear on the website immediately.</li>
+      </ol>
+      <div class="tip">
+        <span class="icon">✓</span>
+        <div><strong>Ask adopters to send a photo.</strong> An after-adoption photo of the animal in their new home is one of the most powerful things on the website. When you mark an adoption as completed, send a quick email asking if they would like to share their story.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── CONTACTS ── -->
+  <section class="section" id="contacts">
+    <h2 class="section-title">Contact Form Submissions</h2>
+    <p class="section-intro">Messages sent through the website's contact form are saved here. You will also receive them by email, but this section keeps a permanent record.</p>
+
+    <div class="subsection">
+      <h3>Viewing messages</h3>
+      <ol class="steps">
+        <li>Click <strong>Contacts</strong> in the sidebar.</li>
+        <li>Click any message to open it.</li>
+        <li>Reply to the person directly using their email address — you cannot reply from within the admin panel.</li>
+      </ol>
+      <div class="note">
+        <span class="icon">ℹ</span>
+        <div>There is no "mark as read" or "archive" feature. Once you have dealt with a message, you can leave it as-is or delete it using the <em>Delete</em> button at the bottom of the record.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── MEDIA LIBRARY ── -->
+  <section class="section" id="media-library">
+    <h2 class="section-title">Media Library</h2>
+    <p class="section-intro">The Media section stores every photo and file uploaded to the website. You rarely need to visit this directly — photos are usually uploaded from within an animal record. But it is useful for finding or deleting old files.</p>
+
+    <div class="subsection">
+      <h3>Uploading a file directly</h3>
+      <ol class="steps">
+        <li>Click <strong>Media</strong> in the sidebar.</li>
+        <li>Click <strong>Create New</strong>.</li>
+        <li>Click the upload area and select your file.</li>
+        <li>Enter an <strong>Alt text</strong> description.</li>
+        <li>Click <strong>Save</strong>.</li>
+      </ol>
+    </div>
+
+    <div class="subsection">
+      <h3>Finding an existing photo</h3>
+      <ol class="steps">
+        <li>Click <strong>Media</strong> in the sidebar.</li>
+        <li>Use the search bar at the top to search by filename or alt text.</li>
+        <li>Click a photo to view or edit its details.</li>
+      </ol>
+      <div class="warning">
+        <span class="icon">⚠</span>
+        <div><strong>Do not delete photos that are in use.</strong> If a photo is attached to an animal profile or success story and you delete it from the Media library, it will disappear from the website. Only delete photos that are not attached to any record.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── ADMIN USERS ── -->
+  <section class="section" id="users">
+    <h2 class="section-title">Admin Users</h2>
+    <p class="section-intro">This section manages who has login access to the admin panel. Only create accounts for people who genuinely need access — staff and trusted volunteers.</p>
+
+    <div class="subsection">
+      <h3>Adding a new admin user</h3>
+      <ol class="steps">
+        <li>Click <strong>Users</strong> in the sidebar.</li>
+        <li>Click <strong>Create New</strong>.</li>
+        <li>Enter their <strong>name</strong> and <strong>email address</strong>.</li>
+        <li>Enter a temporary <strong>password</strong> — tell them to change it after first login.</li>
+        <li>Click <strong>Save</strong>.</li>
+      </ol>
+      <div class="tip">
+        <span class="icon">✓</span>
+        <div>Use a strong password — at least 12 characters with a mix of letters, numbers, and symbols. The admin panel controls the entire website, so access should be treated carefully.</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Removing a user</h3>
+      <ol class="steps">
+        <li>Open the user record.</li>
+        <li>Scroll to the bottom and click <strong>Delete</strong>.</li>
+        <li>Confirm the deletion.</li>
+      </ol>
+      <div class="note">
+        <span class="icon">ℹ</span>
+        <div>Remove admin access promptly when a staff member or volunteer leaves the organisation. This is an important security step.</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Changing your own password</h3>
+      <ol class="steps">
+        <li>Click your name or profile icon in the top-right corner of the admin panel.</li>
+        <li>Select <strong>Account</strong>.</li>
+        <li>Scroll to the <strong>Password</strong> field and enter a new one.</li>
+        <li>Click <strong>Save</strong>.</li>
+      </ol>
+    </div>
+  </section>
+
+
+  <!-- ══ COMING SOON SECTIONS ══ -->
+  <section class="section" id="coming-soon">
+    <h2 class="section-title">Features Coming Soon</h2>
+    <p class="section-intro">The following sections will be added to this guide as each feature is built and added to the website.</p>
+
+    <div class="subsection" id="cs-events">
+      <h3>Events <span class="coming-soon">Coming soon</span></h3>
+      <div class="placeholder-box">
+        <span class="icon">⏳</span>
+        <div>This section will explain how to create and manage adoption events, fundraising drives, and community days. It will be added when the Events feature is live on the website.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="cs-globals">
+      <h3>Site-wide text and homepage content <span class="coming-soon">Coming soon</span></h3>
+      <div class="placeholder-box">
+        <span class="icon">⏳</span>
+        <div>This section will explain how to edit the homepage headline, mission statement, and other text that appears across the website without touching code. It will be added when the CMS Globals feature is live.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="cs-foster">
+      <h3>Foster applications <span class="coming-soon">Coming soon</span></h3>
+      <div class="placeholder-box">
+        <span class="icon">⏳</span>
+        <div>This section will explain how to view and manage applications from people who want to foster an animal temporarily. It will be added when the Foster feature is live on the website.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="cs-sponsor">
+      <h3>Sponsor an animal <span class="coming-soon">Coming soon</span></h3>
+      <div class="placeholder-box">
+        <span class="icon">⏳</span>
+        <div>This section will explain how to add animals to the sponsorship programme and manage sponsor records. It will be added when the Sponsor Animals feature is live.</div>
+      </div>
+    </div>
+
+    <div class="subsection" id="cs-rescue">
+      <h3>Stray rescue reports <span class="coming-soon">Coming soon</span></h3>
+      <div class="placeholder-box">
+        <span class="icon">⏳</span>
+        <div>This section will explain how to view incoming stray rescue reports from the public, use the map view, update report status, and close resolved cases. It will be added when the Rescue Reporting feature is live.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── TROUBLESHOOTING ── -->
+  <section class="section" id="troubleshoot">
+    <h2 class="section-title">Troubleshooting</h2>
+
+    <div class="subsection">
+      <h3>Common issues</h3>
+      <table class="fields">
+        <thead><tr><th>Problem</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Photo will not upload</td>
+            <td>Make sure you have filled in the <strong>Alt text</strong> field. This is required. Also check the file is a JPG, PNG, or WebP image under 10 MB.</td>
+          </tr>
+          <tr>
+            <td>Animal not appearing on website after saving</td>
+            <td>Check the animal's <strong>Status</strong> field. It must be set to <em>Available</em> — not <em>Draft</em> or <em>Adopted</em>.</td>
+          </tr>
+          <tr>
+            <td>Logged out unexpectedly</td>
+            <td>Admin sessions expire after a period of inactivity. Simply log in again — your work is saved.</td>
+          </tr>
+          <tr>
+            <td>Forgot admin panel password</td>
+            <td>Click <em>Forgot password</em> on the login screen. A reset email will be sent to your address.</td>
+          </tr>
+          <tr>
+            <td>Accidentally deleted a record</td>
+            <td>Deleted records cannot be recovered from the admin panel. Contact the developer who can restore data from a backup.</td>
+          </tr>
+          <tr>
+            <td>Website looks wrong or a page is broken</td>
+            <td>Do not try to fix it yourself. Contact the developer immediately with a screenshot and the URL of the broken page.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+  <!-- ── CONTACT DEV ── -->
+  <section class="section" id="contact-dev">
+    <h2 class="section-title">Contact the Developer</h2>
+    <p>If you encounter a problem not covered in this guide, or if something on the website is broken, contact the developer:</p>
+    <table class="fields" style="margin-top: 16px;">
+      <tbody>
+        <tr><td><strong>Name</strong></td><td>Neroshana Gunasekara</td></tr>
+        <tr><td><strong>Email</strong></td><td><a href="mailto:nero4developer@gmail.com">nero4developer@gmail.com</a></td></tr>
+      </tbody>
+    </table>
+    <div class="note" style="margin-top: 20px;">
+      <span class="icon">ℹ</span>
+      <div>When reporting a problem, include: a screenshot of the issue, the URL of the page where it happened, and what you were trying to do when it occurred. This helps resolve it faster.</div>
+    </div>
+  </section>
+
+  <footer class="guide-footer">
+    <p>Animal SOS Website — Admin Guide &nbsp;·&nbsp; Built and donated by <a href="https://github.com/nerovoxx">Neroshana Gunasekara</a> &nbsp;·&nbsp; Last updated: 2026</p>
+  </footer>
+
+</main>
+</body>
+</html>

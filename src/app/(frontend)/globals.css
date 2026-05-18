@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-dm-sans);
+
+  /* Brand colours */
+  --color-cream: #F7F3EC;
+  --color-warm-dark: #1C1510;
+  --color-footer-bg: #0E0C09;
+  --color-amber: #D4832A;
+  --color-amber-light: #F2C27A;
+  --color-amber-pale: #FDF3E3;
+  --color-clay: #B85C3A;
+  --color-sage: #4A6741;
+  --color-sage-light: #C8D9C4;
+  --color-text-body: #3A2E26;
+  --color-text-muted: #7A6A5A;
+  --color-off-white: #FFFDF9;
+  --color-border: #E8E2D8;
+}
+
+body {
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+/* Visible focus ring using brand amber */
+:focus-visible {
+  outline: 2px solid #D4832A;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
