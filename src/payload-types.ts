@@ -178,7 +178,7 @@ export interface Media {
 export interface Animal {
   id: number;
   name: string;
-  type: 'dog' | 'cat' | 'other';
+  type: 'dog' | 'cat' | 'puppy' | 'kitten' | 'other';
   breed: string;
   /**
    * Age in months
@@ -310,26 +310,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'animals';
-        value: number | Animal;
-      } | null)
-    | ({
-        relationTo: 'adoptions';
-        value: number | Adoption;
-      } | null)
-    | ({
-        relationTo: 'contacts';
-        value: number | Contact;
-      } | null)
-    | ({
-        relationTo: 'volunteers';
-        value: number | Volunteer;
-      } | null)
-    | ({
-        relationTo: 'success-stories';
-        value: number | SuccessStory;
       } | null);
   globalSlug?: string | null;
   user: {
