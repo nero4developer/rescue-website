@@ -27,6 +27,8 @@ export const Animals: CollectionConfig = {
       options: [
         { label: 'Dog', value: 'dog' },
         { label: 'Cat', value: 'cat' },
+        { label: 'Puppy', value: 'puppy' },
+        { label: 'Kitten', value: 'kitten' },
         { label: 'Other', value: 'other' },
       ],
     },
