@@ -6,7 +6,8 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   auth: {
-    tokenExpiration: 28800, // 8 hours
+    tokenExpiration: 28800,
+    useSessions: false,
   },
   fields: [],
 }
