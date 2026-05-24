@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { getAnimals } from '@/lib/payload'
 import AnimalCard from '@/app/components/AnimalCard'
 
+export const dynamic = 'force-dynamic'
+
 export default async function HomePage() {
   const featured = await getAnimals({ status: 'available', limit: 6 }).catch(() => ({ docs: [] }))
 

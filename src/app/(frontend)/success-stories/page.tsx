@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { getSuccessStories } from '@/lib/payload'
 import StoryCard from './StoryCard'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Success Stories — Animal SOS Adoptions',
   description: 'Read stories from families who adopted rescued Sri Lankan street dogs and cats through Animal SOS.',
