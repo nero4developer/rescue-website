@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     return [{ source: '/(.*)', headers: securityHeaders }]
   },
   images: {
+    unoptimized: process.env.NODE_ENV === 'development',
     localPatterns: [
       {
         pathname: '/api/media/file/**',
@@ -33,12 +34,6 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'place.dog',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3000',
-        pathname: '/api/media/file/**',
       },
     ],
   },
