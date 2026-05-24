@@ -22,6 +22,24 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn2.thecatapi.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'place.dog',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/media/file/**',
+      },
     ],
   },
   webpack: (webpackConfig) => {
