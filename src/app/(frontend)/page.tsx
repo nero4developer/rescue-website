@@ -5,7 +5,7 @@ import AnimalCard from '@/app/components/AnimalCard'
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-  const timeout = new Promise<{ docs: [] }>((r) => setTimeout(() => r({ docs: [] }), 8000))
+  const timeout = new Promise<{ docs: [] }>((r) => setTimeout(() => r({ docs: [] }), 25000))
   const featured = await Promise.race([getAnimals({ status: 'available', limit: 6 }), timeout]).catch(() => ({ docs: [] }))
 
   return (

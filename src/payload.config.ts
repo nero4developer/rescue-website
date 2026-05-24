@@ -27,7 +27,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || '',
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000',
   db: process.env.DATABASE_URI
-    ? postgresAdapter({ pool: { connectionString: process.env.DATABASE_URI, max: 1, ssl: { rejectUnauthorized: false }, connectionTimeoutMillis: 10000, idleTimeoutMillis: 30000 } })
+    ? postgresAdapter({ pool: { connectionString: process.env.DATABASE_URI, max: 1, ssl: { rejectUnauthorized: false }, connectionTimeoutMillis: 30000, idleTimeoutMillis: 30000 } })
     : sqliteAdapter({ client: { url: 'file:./animal-sos.db' } }),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
