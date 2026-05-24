@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getAnimalBySlug, getAllAnimalSlugs } from '@/lib/payload'
+import { getAnimalBySlug, getAllAnimalSlugs } from '@/lib/payload-server'
 
 export async function generateStaticParams() {
   const slugs = await getAllAnimalSlugs().catch(() => [])

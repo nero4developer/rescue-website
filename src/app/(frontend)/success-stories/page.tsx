@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getSuccessStories } from '@/lib/payload'
+import { getSuccessStories } from '@/lib/payload-server'
 import StoryCard from './StoryCard'
 
 export const dynamic = 'force-dynamic'

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getAnimals } from '@/lib/payload'
+import { getAnimals } from '@/lib/payload-server'
 import AnimalCard from '@/app/components/AnimalCard'
 
 export const dynamic = 'force-dynamic'
