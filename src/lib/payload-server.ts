@@ -1,4 +1,5 @@
 import { getPayload } from 'payload'
+import type { Where } from 'payload'
 import config from '@payload-config'
 import type { Animal, AnimalsQuery, Story } from './payload'
 
@@ -18,7 +19,7 @@ async function client() {
 export async function getAnimals(query: AnimalsQuery = {}): Promise<PayloadList<Animal>> {
   const payload = await client()
 
-  const where: Record<string, unknown> = {}
+  const where: Where = {}
   if (query.status) {
     where.status = { equals: query.status }
   } else {
@@ -69,7 +70,7 @@ export async function getAllAnimalSlugs(): Promise<string[]> {
 export async function getSuccessStories(featuredOnly = false): Promise<Story[]> {
   const payload = await client()
 
-  const where: Record<string, unknown> = {}
+  const where: Where = {}
   if (featuredOnly) where.featured = { equals: true }
 
   const result = await payload.find({
