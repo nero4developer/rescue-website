@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getAnimals, getSuccessStories } from '@/lib/payload-server'
-import type { Story } from '@/lib/payload'
 import HomepageAnimals from './HomepageAnimals'
 
 export const dynamic = 'force-dynamic'
@@ -199,36 +198,8 @@ function HowItWorksSection() {
   )
 }
 
-const FALLBACK_STORIES = [
-  {
-    quote: 'We adopted Kala from the UK and she transformed our home. The team made every step seamless — we barely noticed the distance.',
-    name: 'Sarah & Tom',
-    loc: 'London, UK · Adopted Kala',
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80&fit=crop&crop=face',
-  },
-  {
-    quote: "Bruno had a rough start but is now the happiest dog in Berlin. Animal SOS held our hand through the whole process.",
-    name: 'Marcus H.',
-    loc: 'Berlin, Germany · Adopted Bruno',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80&fit=crop&crop=face',
-  },
-  {
-    quote: 'Little Sari arrived scared and skinny. Two years on, she rules our house and our hearts. Best decision we ever made.',
-    name: 'Priya N.',
-    loc: 'Colombo, Sri Lanka · Adopted Sari',
-    avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80&fit=crop&crop=face',
-  },
-]
-
-function StoriesPreview({ stories }: { stories: Story[] }) {
-  const items = stories.length >= 3
-    ? stories.slice(0, 3).map((s) => ({
-        quote: s.quote,
-        name: s.adopterFirstName,
-        loc: `${s.country} · Adopted ${s.animalName}`,
-        avatar: s.photo?.url ?? null,
-      }))
-    : FALLBACK_STORIES
+function StoriesPreview({ stories }: { stories: import('@/lib/payload').Story[] }) {
+  if (stories.length === 0) return null
 
   return (
     <section className="px-6 md:px-16 py-24 bg-amber-pale">
@@ -237,21 +208,21 @@ function StoriesPreview({ stories }: { stories: Story[] }) {
         They found their<br />golden basket
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
-        {items.map((s) => (
-          <div key={s.name} className="bg-off-white border border-[rgba(212,131,42,0.12)] rounded-[20px] p-8 flex flex-col gap-5 hover:-translate-y-1 transition-transform">
+        {stories.slice(0, 3).map((s) => (
+          <div key={s.id} className="bg-off-white border border-[rgba(212,131,42,0.12)] rounded-[20px] p-8 flex flex-col gap-5 hover:-translate-y-1 transition-transform">
             <div className="text-amber text-[14px] tracking-[2px]">★★★★★</div>
             <p className="text-[15px] leading-[1.75] text-text-body flex-1 italic">&ldquo;{s.quote}&rdquo;</p>
             <div className="flex items-center gap-4 pt-4 border-t border-[rgba(212,131,42,0.1)]">
               <div className="w-11 h-11 rounded-full bg-amber-pale border-2 border-amber-light overflow-hidden shrink-0 flex items-center justify-center text-[20px]">
-                {s.avatar ? (
-                  <Image src={s.avatar} alt={s.name} width={44} height={44} className="w-full h-full object-cover" />
+                {s.photo?.url ? (
+                  <Image src={s.photo.url} alt={s.adopterFirstName} width={44} height={44} className="w-full h-full object-cover" />
                 ) : (
                   <span>🐾</span>
                 )}
               </div>
               <div>
-                <div className="font-medium text-warm-dark text-[14px]">{s.name}</div>
-                <div className="text-text-muted text-[12px] mt-0.5">{s.loc}</div>
+                <div className="font-medium text-warm-dark text-[14px]">{s.adopterFirstName}</div>
+                <div className="text-text-muted text-[12px] mt-0.5">{s.country} · Adopted {s.animalName}</div>
               </div>
             </div>
           </div>
