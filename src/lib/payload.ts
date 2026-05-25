@@ -37,6 +37,7 @@ async function payloadFetch<T>(path: string, options?: RequestInit): Promise<T> 
 
 export type AnimalsQuery = {
   type?: string
+  typeIn?: string[]
   sex?: string
   status?: string
   search?: string
@@ -62,7 +63,12 @@ export async function getAnimals(query: AnimalsQuery = {}): Promise<PayloadList<
   }
   ai++
 
-  if (query.type) {
+  if (query.typeIn?.length) {
+    query.typeIn.forEach((t, i) => {
+      params.set(`where[and][${ai}][or][${i}][type][equals]`, t)
+    })
+    ai++
+  } else if (query.type) {
     params.set(`where[and][${ai}][type][equals]`, query.type)
     ai++
   }
