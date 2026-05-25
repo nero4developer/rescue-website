@@ -186,6 +186,9 @@ export interface Animal {
         id?: string | null;
       }[]
     | null;
+  temperament?: ('calm-gentle' | 'playful-energetic' | 'shy-patience' | 'social-butterfly' | 'independent')[] | null;
+  goodWith?: ('children' | 'other-dogs' | 'cats' | 'first-time-owners')[] | null;
+  special?: ('urgent' | 'quirky' | 'senior')[] | null;
   slug?: string | null;
   description?: {
     root: {
@@ -397,6 +400,9 @@ export interface AnimalsSelect<T extends boolean = true> {
         trait?: T;
         id?: T;
       };
+  temperament?: T;
+  goodWith?: T;
+  special?: T;
   slug?: T;
   description?: T;
   updatedAt?: T;
