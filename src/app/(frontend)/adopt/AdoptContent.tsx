@@ -20,13 +20,26 @@ export default function AdoptContent() {
   const type = searchParams.get('type') || ''
   const sex = searchParams.get('sex') || ''
   const search = searchParams.get('q') || ''
+  const traitsParam = searchParams.get('traits') || ''
+  const specialParam = searchParams.get('special') || ''
+
+  const activeTraits = traitsParam ? traitsParam.split(',') : []
+  const activeSpecial = specialParam ? specialParam.split(',') : []
 
   const fetchAnimals = useCallback(async (resetPage = true) => {
     setLoading(true)
     const currentPage = resetPage ? 1 : page
     if (resetPage) setPage(1)
     try {
-      const result = await getAnimals({ type, sex, search, page: currentPage, limit: 12 })
+      const result = await getAnimals({
+        type,
+        sex,
+        search,
+        traits: traitsParam ? traitsParam.split(',') : [],
+        special: specialParam ? specialParam.split(',') : [],
+        page: currentPage,
+        limit: 12,
+      })
       if (resetPage) {
         setAnimals(result.docs)
       } else {
@@ -37,15 +50,22 @@ export default function AdoptContent() {
     } finally {
       setLoading(false)
     }
-  }, [type, sex, search, page])
+  }, [type, sex, search, traitsParam, specialParam, page])
 
-  useEffect(() => { fetchAnimals(true) }, [type, sex, search]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { fetchAnimals(true) }, [type, sex, search, traitsParam, specialParam]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function setParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString())
     if (value) params.set(key, value)
     else params.delete(key)
     router.push(`/adopt?${params}`, { scroll: false })
+  }
+
+  function toggleArrayParam(key: string, current: string[], value: string) {
+    const next = current.includes(value)
+      ? current.filter((v) => v !== value)
+      : [...current, value]
+    setParam(key, next.join(','))
   }
 
   function clearFilters() {
@@ -123,7 +143,15 @@ export default function AdoptContent() {
       </div>
 
       <div className="flex min-h-[80vh]">
-        <FilterSidebar onClear={clearFilters} />
+        <FilterSidebar
+          activeType={type}
+          onTypeChange={(value) => setParam('type', value)}
+          activeTraits={activeTraits}
+          onTraitToggle={(value) => toggleArrayParam('traits', activeTraits, value)}
+          activeSpecial={activeSpecial}
+          onSpecialToggle={(value) => toggleArrayParam('special', activeSpecial, value)}
+          onClear={clearFilters}
+        />
         <div className="flex-1 p-10">
           <div className="flex items-center justify-between mb-7">
             <div className="text-[14px] text-text-muted">

@@ -1,4 +1,24 @@
-export default function FilterSidebar({ onClear }: { onClear: () => void }) {
+'use client'
+
+interface Props {
+  activeType: string
+  onTypeChange: (value: string) => void
+  activeTraits: string[]
+  onTraitToggle: (value: string) => void
+  activeSpecial: string[]
+  onSpecialToggle: (value: string) => void
+  onClear: () => void
+}
+
+export default function FilterSidebar({
+  activeType,
+  onTypeChange,
+  activeTraits,
+  onTraitToggle,
+  activeSpecial,
+  onSpecialToggle,
+  onClear,
+}: Props) {
   return (
     <aside
       aria-label="Filter animals"
@@ -10,24 +30,61 @@ export default function FilterSidebar({ onClear }: { onClear: () => void }) {
           { label: 'Cats', value: 'cat' },
           { label: 'Puppies', value: 'puppy' },
           { label: 'Kittens', value: 'kitten' },
-        ].map((o) => <CheckItem key={o.value} label={o.label} />)}
+        ].map((o) => (
+          <CheckItem
+            key={o.value}
+            label={o.label}
+            checked={activeType === o.value}
+            onChange={() => onTypeChange(activeType === o.value ? '' : o.value)}
+          />
+        ))}
       </FilterGroup>
 
       <FilterGroup title="Temperament">
-        {['Calm & gentle', 'Playful & energetic', 'Shy, needs patience', 'Social butterfly', 'Independent'].map((l) => (
-          <CheckItem key={l} label={l} />
+        {[
+          { label: 'Calm & gentle', value: 'calm' },
+          { label: 'Playful & energetic', value: 'playful' },
+          { label: 'Shy, needs patience', value: 'shy' },
+          { label: 'Social butterfly', value: 'social' },
+          { label: 'Independent', value: 'independent' },
+        ].map((o) => (
+          <CheckItem
+            key={o.value}
+            label={o.label}
+            checked={activeTraits.includes(o.value)}
+            onChange={() => onTraitToggle(o.value)}
+          />
         ))}
       </FilterGroup>
 
       <FilterGroup title="Good with">
-        {['Children', 'Other dogs', 'Cats', 'First-time owners'].map((l) => (
-          <CheckItem key={l} label={l} />
+        {[
+          { label: 'Children', value: 'children' },
+          { label: 'Other dogs', value: 'dogs' },
+          { label: 'Cats', value: 'cat-friendly' },
+          { label: 'First-time owners', value: 'first-time' },
+        ].map((o) => (
+          <CheckItem
+            key={o.value}
+            label={o.label}
+            checked={activeTraits.includes(o.value)}
+            onChange={() => onTraitToggle(o.value)}
+          />
         ))}
       </FilterGroup>
 
       <FilterGroup title="Special">
-        {['Urgent cases', 'Lovely little quirks', 'Senior animals'].map((l) => (
-          <CheckItem key={l} label={l} />
+        {[
+          { label: 'Urgent cases', value: 'urgent' },
+          { label: 'Lovely little quirks', value: 'quirky' },
+          { label: 'Senior animals', value: 'senior' },
+        ].map((o) => (
+          <CheckItem
+            key={o.value}
+            label={o.label}
+            checked={activeSpecial.includes(o.value)}
+            onChange={() => onSpecialToggle(o.value)}
+          />
         ))}
       </FilterGroup>
 
@@ -51,10 +108,24 @@ function FilterGroup({ title, children }: { title: string; children: React.React
   )
 }
 
-function CheckItem({ label }: { label: string }) {
+function CheckItem({
+  label,
+  checked = false,
+  onChange,
+}: {
+  label: string
+  checked?: boolean
+  onChange?: () => void
+}) {
   return (
     <label className="flex items-center gap-[10px] cursor-pointer text-[14px] text-text-body">
-      <input type="checkbox" className="w-4 h-4 accent-amber cursor-pointer" aria-label={label} />
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange ?? (() => {})}
+        className="w-4 h-4 accent-amber cursor-pointer"
+        aria-label={label}
+      />
       {label}
     </label>
   )
