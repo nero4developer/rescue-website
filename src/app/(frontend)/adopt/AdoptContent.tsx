@@ -20,10 +20,12 @@ export default function AdoptContent() {
   const type = searchParams.get('type') || ''
   const sex = searchParams.get('sex') || ''
   const search = searchParams.get('q') || ''
-  const traitsParam = searchParams.get('traits') || ''
+  const temperamentParam = searchParams.get('temperament') || ''
+  const goodWithParam = searchParams.get('goodwith') || ''
   const specialParam = searchParams.get('special') || ''
 
-  const activeTraits = traitsParam ? traitsParam.split(',') : []
+  const activeTemperament = temperamentParam ? temperamentParam.split(',') : []
+  const activeGoodWith = goodWithParam ? goodWithParam.split(',') : []
   const activeSpecial = specialParam ? specialParam.split(',') : []
 
   const fetchAnimals = useCallback(async (resetPage = true) => {
@@ -35,7 +37,8 @@ export default function AdoptContent() {
         type,
         sex,
         search,
-        traits: traitsParam ? traitsParam.split(',') : [],
+        temperament: temperamentParam ? temperamentParam.split(',') : [],
+        goodWith: goodWithParam ? goodWithParam.split(',') : [],
         special: specialParam ? specialParam.split(',') : [],
         page: currentPage,
         limit: 12,
@@ -50,9 +53,9 @@ export default function AdoptContent() {
     } finally {
       setLoading(false)
     }
-  }, [type, sex, search, traitsParam, specialParam, page])
+  }, [type, sex, search, temperamentParam, goodWithParam, specialParam, page])
 
-  useEffect(() => { fetchAnimals(true) }, [type, sex, search, traitsParam, specialParam]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { fetchAnimals(true) }, [type, sex, search, temperamentParam, goodWithParam, specialParam]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function setParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString())
@@ -146,8 +149,10 @@ export default function AdoptContent() {
         <FilterSidebar
           activeType={type}
           onTypeChange={(value) => setParam('type', value)}
-          activeTraits={activeTraits}
-          onTraitToggle={(value) => toggleArrayParam('traits', activeTraits, value)}
+          activeTemperament={activeTemperament}
+          onTemperamentToggle={(value) => toggleArrayParam('temperament', activeTemperament, value)}
+          activeGoodWith={activeGoodWith}
+          onGoodWithToggle={(value) => toggleArrayParam('goodwith', activeGoodWith, value)}
           activeSpecial={activeSpecial}
           onSpecialToggle={(value) => toggleArrayParam('special', activeSpecial, value)}
           onClear={clearFilters}

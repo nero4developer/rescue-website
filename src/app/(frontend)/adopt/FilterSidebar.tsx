@@ -3,8 +3,10 @@
 interface Props {
   activeType: string
   onTypeChange: (value: string) => void
-  activeTraits: string[]
-  onTraitToggle: (value: string) => void
+  activeTemperament: string[]
+  onTemperamentToggle: (value: string) => void
+  activeGoodWith: string[]
+  onGoodWithToggle: (value: string) => void
   activeSpecial: string[]
   onSpecialToggle: (value: string) => void
   onClear: () => void
@@ -13,8 +15,10 @@ interface Props {
 export default function FilterSidebar({
   activeType,
   onTypeChange,
-  activeTraits,
-  onTraitToggle,
+  activeTemperament,
+  onTemperamentToggle,
+  activeGoodWith,
+  onGoodWithToggle,
   activeSpecial,
   onSpecialToggle,
   onClear,
@@ -42,17 +46,17 @@ export default function FilterSidebar({
 
       <FilterGroup title="Temperament">
         {[
-          { label: 'Calm & gentle', value: 'calm' },
-          { label: 'Playful & energetic', value: 'playful' },
-          { label: 'Shy, needs patience', value: 'shy' },
-          { label: 'Social butterfly', value: 'social' },
+          { label: 'Calm & gentle', value: 'calm-gentle' },
+          { label: 'Playful & energetic', value: 'playful-energetic' },
+          { label: 'Shy, needs patience', value: 'shy-patience' },
+          { label: 'Social butterfly', value: 'social-butterfly' },
           { label: 'Independent', value: 'independent' },
         ].map((o) => (
           <CheckItem
             key={o.value}
             label={o.label}
-            checked={activeTraits.includes(o.value)}
-            onChange={() => onTraitToggle(o.value)}
+            checked={activeTemperament.includes(o.value)}
+            onChange={() => onTemperamentToggle(o.value)}
           />
         ))}
       </FilterGroup>
@@ -60,15 +64,15 @@ export default function FilterSidebar({
       <FilterGroup title="Good with">
         {[
           { label: 'Children', value: 'children' },
-          { label: 'Other dogs', value: 'dogs' },
-          { label: 'Cats', value: 'cat-friendly' },
-          { label: 'First-time owners', value: 'first-time' },
+          { label: 'Other dogs', value: 'other-dogs' },
+          { label: 'Cats', value: 'cats' },
+          { label: 'First-time owners', value: 'first-time-owners' },
         ].map((o) => (
           <CheckItem
             key={o.value}
             label={o.label}
-            checked={activeTraits.includes(o.value)}
-            onChange={() => onTraitToggle(o.value)}
+            checked={activeGoodWith.includes(o.value)}
+            onChange={() => onGoodWithToggle(o.value)}
           />
         ))}
       </FilterGroup>

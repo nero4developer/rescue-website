@@ -88,6 +88,42 @@ export const Animals: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'temperament',
+      type: 'select',
+      hasMany: true,
+      options: [
+        { label: 'Calm & gentle', value: 'calm-gentle' },
+        { label: 'Playful & energetic', value: 'playful-energetic' },
+        { label: 'Shy, needs patience', value: 'shy-patience' },
+        { label: 'Social butterfly', value: 'social-butterfly' },
+        { label: 'Independent', value: 'independent' },
+      ],
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'goodWith',
+      type: 'select',
+      hasMany: true,
+      options: [
+        { label: 'Children', value: 'children' },
+        { label: 'Other dogs', value: 'other-dogs' },
+        { label: 'Cats', value: 'cats' },
+        { label: 'First-time owners', value: 'first-time-owners' },
+      ],
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'special',
+      type: 'select',
+      hasMany: true,
+      options: [
+        { label: 'Urgent cases', value: 'urgent' },
+        { label: 'Lovely little quirks', value: 'quirky' },
+        { label: 'Senior animals', value: 'senior' },
+      ],
+      admin: { position: 'sidebar' },
+    },
     slugField('name'),
     {
       name: 'description',
